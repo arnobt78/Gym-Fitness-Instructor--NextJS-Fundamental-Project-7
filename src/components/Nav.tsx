@@ -69,7 +69,7 @@ export function Nav() {
               return isWorkoutLink && disabled ? (
                 <Tooltip
                   key={href}
-                  content="Generate a workout first (click Formulate & Get Sweaty)"
+                  content="Generate a workout first\n(click Formulate & Get Sweaty)"
                   disabled
                 >
                   {btn}

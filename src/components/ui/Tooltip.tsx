@@ -67,6 +67,19 @@ export function Tooltip({ children, content, side = 'top', disabled = false }: T
   const effectiveSide =
     side === 'top' && coords && coords.top < minSpaceAbove ? 'bottom' : side;
 
+  /* Clamp horizontal center so tooltip stays in viewport (avoid cut on left/right). */
+  const centerX = coords ? coords.left + coords.width / 2 : 0;
+  const padding = 12;
+  const maxTooltipHalf = 140;
+  const clampedLeft =
+    coords &&
+    typeof window !== 'undefined'
+      ? Math.max(
+          padding + maxTooltipHalf,
+          Math.min(centerX, window.innerWidth - padding - maxTooltipHalf)
+        )
+      : centerX;
+
   const tooltipContent =
     visible &&
     content &&
@@ -75,9 +88,9 @@ export function Tooltip({ children, content, side = 'top', disabled = false }: T
     createPortal(
       <div
         role="tooltip"
-        className="fixed z-[9999] px-3 py-2 text-sm text-slate-900 bg-slate-200 rounded-md shadow-lg whitespace-nowrap border border-slate-300 pointer-events-none"
+        className="fixed z-[9999] px-3 py-2 text-sm text-slate-900 bg-slate-200 rounded-md shadow-lg whitespace-pre-line text-left max-w-[280px] border border-slate-300 pointer-events-none"
         style={{
-          left: coords.left + coords.width / 2,
+          left: clampedLeft,
           top:
             effectiveSide === 'top' ? coords.top : coords.top + coords.height,
           transform:
