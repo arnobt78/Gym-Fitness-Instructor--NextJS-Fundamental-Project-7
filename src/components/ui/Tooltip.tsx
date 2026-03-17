@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 
 interface TooltipProps {
   children: React.ReactNode;
-  content: string;
+  content: React.ReactNode;
   side?: 'top' | 'bottom';
   disabled?: boolean;
 }
@@ -82,13 +82,14 @@ export function Tooltip({ children, content, side = 'top', disabled = false }: T
 
   const tooltipContent =
     visible &&
-    content &&
+    content != null &&
+    content !== '' &&
     coords &&
     typeof document !== 'undefined' &&
     createPortal(
       <div
         role="tooltip"
-        className="fixed z-[9999] px-3 py-2 text-sm text-slate-900 bg-slate-200 rounded-md shadow-lg whitespace-pre-line text-left max-w-[280px] border border-slate-300 pointer-events-none"
+        className="fixed z-[9999] px-3 py-2 text-sm text-slate-900 bg-slate-200 rounded-md shadow-lg text-left max-w-[280px] border border-slate-300 pointer-events-none"
         style={{
           left: clampedLeft,
           top:
