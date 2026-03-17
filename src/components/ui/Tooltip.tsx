@@ -62,6 +62,11 @@ export function Tooltip({ children, content, side = 'top', disabled = false }: T
 
   if (!disabled) return <>{children}</>;
 
+  /* When near top of viewport, show below trigger so tooltip is not clipped. */
+  const minSpaceAbove = 100;
+  const effectiveSide =
+    side === 'top' && coords && coords.top < minSpaceAbove ? 'bottom' : side;
+
   const tooltipContent =
     visible &&
     content &&
@@ -73,8 +78,12 @@ export function Tooltip({ children, content, side = 'top', disabled = false }: T
         className="fixed z-[9999] px-3 py-2 text-sm text-slate-900 bg-slate-200 rounded-md shadow-lg whitespace-nowrap border border-slate-300 pointer-events-none"
         style={{
           left: coords.left + coords.width / 2,
-          top: side === 'top' ? coords.top : coords.top + coords.height,
-          transform: side === 'top' ? 'translate(-50%, calc(-100% - 6px))' : 'translate(-50%, 6px)',
+          top:
+            effectiveSide === 'top' ? coords.top : coords.top + coords.height,
+          transform:
+            effectiveSide === 'top'
+              ? 'translate(-50%, calc(-100% - 6px))'
+              : 'translate(-50%, 6px)',
         }}
       >
         {content}
