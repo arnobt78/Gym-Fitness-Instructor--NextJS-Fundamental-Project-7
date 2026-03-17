@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 
 interface TooltipProps {
   children: React.ReactNode;
@@ -10,46 +11,86 @@ interface TooltipProps {
 }
 
 /**
- * Hover tooltip. When disabled=true, wraps children in a div that shows content on mouseEnter
- * and hides on mouseLeave. When disabled=false, renders only children (no wrapper). Used e.g. for disabled Formulate button.
+ * Portal-based tooltip (shadcn-style): renders content in document.body with position:fixed
+ * so it is not clipped by nav overflow and does not cause layout shift or bounce.
+ * When disabled=true, shows content on hover; when disabled=false, renders only children.
  */
 export function Tooltip({ children, content, side = 'top', disabled = false }: TooltipProps) {
   const [visible, setVisible] = useState(false);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [coords, setCoords] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
+  const wrapperRef = useRef<HTMLSpanElement>(null);
+  const showTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  /* Clean up mouseleave listener when visible toggles so tooltip hides when cursor leaves wrapper. */
+  const updatePosition = useCallback(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    setCoords({ left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+  }, []);
+
+  const handleEnter = useCallback(() => {
+    if (!disabled) return;
+    showTimeoutRef.current = setTimeout(() => {
+      updatePosition();
+      setVisible(true);
+    }, 150);
+  }, [disabled, updatePosition]);
+
+  const handleLeave = useCallback(() => {
+    if (showTimeoutRef.current) {
+      clearTimeout(showTimeoutRef.current);
+      showTimeoutRef.current = null;
+    }
+    setVisible(false);
+    setCoords(null);
+  }, []);
+
   useEffect(() => {
     if (!visible) return;
     const el = wrapperRef.current;
     if (!el) return;
-    const onLeave = () => setVisible(false);
+    const onLeave = () => handleLeave();
     el.addEventListener('mouseleave', onLeave);
     return () => el.removeEventListener('mouseleave', onLeave);
-  }, [visible]);
+  }, [visible, handleLeave]);
 
-  /** When disabled=true, the child is disabled and we show tooltip on hover. */
+  useEffect(() => {
+    return () => {
+      if (showTimeoutRef.current) clearTimeout(showTimeoutRef.current);
+    };
+  }, []);
+
   if (!disabled) return <>{children}</>;
 
+  const tooltipContent =
+    visible &&
+    content &&
+    coords &&
+    typeof document !== 'undefined' &&
+    createPortal(
+      <div
+        role="tooltip"
+        className="fixed z-[9999] px-3 py-2 text-sm text-slate-900 bg-slate-200 rounded-md shadow-lg whitespace-nowrap border border-slate-300 pointer-events-none"
+        style={{
+          left: coords.left + coords.width / 2,
+          top: side === 'top' ? coords.top : coords.top + coords.height,
+          transform: side === 'top' ? 'translate(-50%, calc(-100% - 6px))' : 'translate(-50%, 6px)',
+        }}
+      >
+        {content}
+      </div>,
+      document.body
+    );
+
   return (
-    <div
+    <span
       ref={wrapperRef}
-      className="relative inline-flex"
-      onMouseEnter={() => setVisible(true)}
+      className="inline-flex"
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
     >
       {children}
-      {visible && content && (
-        <div
-          role="tooltip"
-          className="absolute z-50 px-3 py-2 text-sm text-slate-900 bg-slate-200 rounded-md shadow-lg whitespace-nowrap border border-slate-300"
-          style={
-            side === 'top'
-              ? { bottom: '100%', left: '50%', transform: 'translateX(-50%) translateY(-6px)', marginBottom: 4 }
-              : { top: '100%', left: '50%', transform: 'translateX(-50%) translateY(6px)', marginTop: 4 }
-          }
-        >
-          {content}
-        </div>
-      )}
-    </div>
+      {tooltipContent}
+    </span>
   );
 }
