@@ -1,6 +1,8 @@
-export const TEMPOS = ['3 0 2', '2 2 2', '4 1 1', '5 3 1', '1 0 1', '3 2 1', '2 1 1']
+import type { SchemesMap, WorkoutsMap, ExercisesMap } from '@/types';
 
-export const SCHEMES = {
+export const TEMPOS: readonly string[] = ['3 0 2', '2 2 2', '4 1 1', '5 3 1', '1 0 1', '3 2 1', '2 1 1'];
+
+export const SCHEMES: SchemesMap = {
     strength_power: {
         repRanges: [3, 8],
         ratio: [3, 2],
@@ -16,9 +18,9 @@ export const SCHEMES = {
         ratio: [2, 4],
         rest: [60, 45]
     }
-}
+};
 
-export const WORKOUTS = {
+export const WORKOUTS: WorkoutsMap = {
     individual: ['biceps', 'triceps', 'chest', 'back', 'shoulders', 'quads', 'hamstrings', 'glutes', 'calves', 'abs'],
     bro_split: {
         push: ['triceps', 'chest', 'shoulders'],
@@ -37,22 +39,9 @@ export const WORKOUTS = {
         upper: ['triceps', 'biceps', 'shoulders', 'chest', 'back'],
         lower: ['quads', 'calves', 'hamstrings', 'glutes']
     }
-}
+};
 
-//write a function that flattens this thing with all the variants
-//if athome, then have to specify equipment (if required otherwise bodyweight)
-//add instructions for substitutions (at home substitutions) for weights etc
-//variant is just going to be gym (forget about home stuff as long as one of the variants is
-//make it so that you can't get the same varient in a single workout (maybe)
-//add all the other variants to the subsubstitute list
-//pick a random exercise
-//for non-members, exclude all the at home specific exercises (anything particularly pussy like a lot of the bodyweight stuff)
-
-const bw_exercises = {
-
-}
-
-export const EXERCISES = {
+export const EXERCISES: ExercisesMap = {
     barbell_bench_press: {
         type: 'compound',
         meta: {

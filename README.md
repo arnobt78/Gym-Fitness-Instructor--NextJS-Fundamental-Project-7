@@ -1,12 +1,8 @@
-# SwoleNormous Gym/Fitness Instructor - ReactVite Web App
-
-![Screenshot 2024-09-08 at 01 19 47](https://github.com/user-attachments/assets/20bc47ba-6ccf-458b-bd37-6449cd0f1c1f) ![Screenshot 2024-09-08 at 01 20 28](https://github.com/user-attachments/assets/73df8bd0-2946-46d4-8b92-28a154173830) ![Screenshot 2024-09-08 at 01 21 18](https://github.com/user-attachments/assets/ffe45b85-5246-4b4e-9cc9-e1c77507519d) ![Screenshot 2024-09-08 at 01 22 12](https://github.com/user-attachments/assets/11391ac5-fbad-4754-bfa3-3d77d5a970c0)
-
----
+# Gym Instructor - Next.js, React, Typescript, TailwindCSS, Web Worker, Training Logic, Personalized Routines, Open Source Fitness Fundamental Project 7
 
 ## Project Summary
 
-**SwoleNormous-GymFit** is a dynamic, web-based gym and fitness training application built with React, Vite, and TailwindCSS. It provides users with intelligent workout generation, exercise guidance, and personalized training plans, leveraging advanced algorithmic logic for routine creation. The app is designed for both beginners and advanced gym-goers, supporting a variety of goals and equipment availability.
+A dynamic, web-based gym and fitness training application built with React, Vite, and TailwindCSS. It provides users with intelligent workout generation, exercise guidance, and personalized training plans, leveraging advanced algorithmic logic for routine creation. The app is designed for both beginners and advanced gym-goers, supporting a variety of goals and equipment availability.
 
 - **Live Demo:** [https://swolenormous-arnob.netlify.app](https://swolenormous-arnob.netlify.app)
 
@@ -92,6 +88,7 @@ npm install
 ```sh
 npm run dev
 ```
+
 Then open your browser to [http://localhost:5173/](http://localhost:5173/)
 
 ### 4. (Optional) Build for Production
@@ -115,12 +112,10 @@ Then configure `tailwind.config.js`:
 
 ```js
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: { extend: {} },
   plugins: [],
+}; plugins: [],
 }
 ```
 
@@ -147,7 +142,7 @@ And add to `src/index.css`:
 - **UI Interaction:** In `Generator.jsx`, users select their preferences, then the app displays a generated routine.
 - **Teaching Content:** Each exercise includes a description and alternatives, helping users learn proper form and variations.
 
-#### Example (Pseudocode):
+#### Example (Pseudocode)
 
 ```
 User selects: Goal = Hypertrophy, Muscle = Chest, Equipment = Bands
