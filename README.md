@@ -5,6 +5,8 @@
 [![React](https://img.shields.io/badge/React-19-blue)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8)](https://tailwindcss.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer-Motion-black)](https://www.framer.com/motion/)
+[![Web Worker](https://img.shields.io/badge/Web-Worker-black)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API)
 
 A dynamic, web-based gym and fitness training application built with **Next.js**, **React**, **TypeScript**, and **Tailwind CSS**. It provides intelligent workout generation, exercise guidance, and personalized training plans using in-browser logic—no backend or API required. The app is designed both as a practical fitness tool and as an **educational codebase** for learning React fundamentals (state, context, reusable components), Next.js App Router, and TypeScript in a real project.
 
