@@ -1,15 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { Dumbbell, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 /**
- * Hero section: headline and CTA. Scrolls to #generate on "Accept & Begin".
+ * Hero section: first screen with headline "Swolenormous", short intro, disclaimer, and CTA.
+ * Uses Framer Motion for fade/slide-in; CTA scrolls to #generate (Generator section) on click.
  */
 export function Hero() {
   return (
+    /* Outer container: full viewport height, centered content, fade-in on mount. */
     <motion.div
       className="min-h-screen flex flex-col gap-10 items-center justify-center text-center max-w-9xl w-full mx-auto p-4"
       initial={{ opacity: 0 }}
@@ -20,8 +21,9 @@ export function Hero() {
         className="flex flex-col gap-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
-      >
+      transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
+    >
+        {/* Icon + headline block: staggered so they animate in after the container. */}
         <Dumbbell
           className="h-12 w-12 sm:h-14 sm:w-14 text-blue-400 mx-auto"
           aria-hidden
@@ -61,6 +63,7 @@ export function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.4, ease: "easeOut" }}
       >
+        {/* Primary CTA: sets location hash to #generate so the page scrolls to Generator (smooth via globals.css). */}
         <Button
           func={() => {
             if (typeof window !== "undefined")

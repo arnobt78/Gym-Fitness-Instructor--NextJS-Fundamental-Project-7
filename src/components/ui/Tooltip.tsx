@@ -10,12 +10,14 @@ interface TooltipProps {
 }
 
 /**
- * Simple tooltip that shows on hover. Used when element is disabled to show friendly message.
+ * Hover tooltip. When disabled=true, wraps children in a div that shows content on mouseEnter
+ * and hides on mouseLeave. When disabled=false, renders only children (no wrapper). Used e.g. for disabled Formulate button.
  */
 export function Tooltip({ children, content, side = 'top', disabled = false }: TooltipProps) {
   const [visible, setVisible] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  /* Clean up mouseleave listener when visible toggles so tooltip hides when cursor leaves wrapper. */
   useEffect(() => {
     if (!visible) return;
     const el = wrapperRef.current;

@@ -1,6 +1,7 @@
 /**
  * Shared TypeScript types for the fitness workout app.
- * Used by data (swoldier), lib (workout generator), and components.
+ * Used by: src/data/swoldier.ts (EXERCISES, SCHEMES, WORKOUTS), src/lib/workout.ts (generateWorkout),
+ * and components (Generator, Workout, ExerciseCard, context). Keeps data and UI contracts in sync.
  */
 
 /** Exercise type: compound (multi-joint) or accessory (isolation). */

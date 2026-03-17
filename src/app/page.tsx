@@ -1,8 +1,8 @@
 import { Homepage } from '@/components/pages/Homepage';
 
 /**
- * Home page (SSR): no client state or event handlers here.
- * All interactive UI lives in client components (Homepage, Generator, etc.).
+ * App Router page for "/" (home). This is a Server Component: no hooks or event handlers.
+ * The main tag provides max-width and padding; all interactivity lives inside the client Homepage.
  */
 export default function HomePage() {
   return (

@@ -12,17 +12,20 @@ interface ExerciseCardProps {
 }
 
 /**
- * Single exercise card: name, type, muscles, description, reps/rest/tempo, sets completed.
+ * One exercise in the generated list: number, name, type, muscles, description (split by ___),
+ * reps/rest/tempo boxes, and a "Sets completed" button (local state 0–5, cycles on click).
  */
 export function ExerciseCard({ exercise, i }: ExerciseCardProps) {
   const [setsCompleted, setSetsComplete] = useState(0);
 
+  /* Cycle 0 → 1 → … → 5 → 0 for demo/tracking; does not persist. */
   function handleSetIncrement() {
     setSetsComplete((prev) => (prev + 1) % 6);
   }
 
   const repsLabel = exercise.unit === 'reps' ? exercise.unit : 'duration';
 
+  /* Staggered entrance: delay by index so cards appear in order. */
   return (
     <motion.div
       className="p-4 rounded-md flex flex-col gap-4 bg-slate-950 sm:flex-wrap"
@@ -49,6 +52,7 @@ export function ExerciseCard({ exercise, i }: ExerciseCardProps) {
         </h3>
         <p className="capitalize">{exercise.muscles.join(' & ')}</p>
       </div>
+      {/* Description may contain ___ as separator (from data variants); each part on its own line. */}
       <div className="flex flex-col bg-slate-950 rounded gap-2">
         {exercise.description.split('___').map((val, idx) => (
           <div key={idx} className="text-sm">

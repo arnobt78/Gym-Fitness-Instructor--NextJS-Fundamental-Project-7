@@ -1,3 +1,4 @@
+/** ESLint flat config: Next.js core-web-vitals + TypeScript, no-explicit-any, unused-vars (args starting with _ ignored). */
 import { defineConfig, globalIgnores } from 'eslint/config';
 import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTs from 'eslint-config-next/typescript';

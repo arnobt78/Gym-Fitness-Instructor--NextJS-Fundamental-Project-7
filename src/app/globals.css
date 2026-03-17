@@ -1,8 +1,9 @@
+/* Tailwind layers: base = reset/normalize, components = reusable classes, utilities = one-off helpers. */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Minimal global styles: scroll and base inherited by layout */
+/* Smooth scroll when navigating via anchor links (e.g. #generate, #workout). */
 html {
   scroll-behavior: smooth;
 }

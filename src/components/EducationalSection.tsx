@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Database, Layers, Box, Type, BookOpen, Activity, Cpu } from "lucide-react";
 
+/* Educational cards shown in "Learn the basics" (id="learn"). Each has title, body, and Lucide icon. */
 const concepts = [
   {
     title: "How workouts are built",
@@ -36,10 +37,11 @@ const concepts = [
   },
 ];
 
+/* When section enters viewport: animate once, trigger when 20% visible, with -80px margin. */
 const viewportOpts = { once: true, margin: "-80px", amount: 0.2 };
 const transitionSmooth = { type: "tween" as const, ease: [0.25, 0.46, 0.45, 0.94], duration: 0.6 };
 
-/** Card entrance from one of four directions, alternating for parallax feel. */
+/** Returns Framer variants so card at index animates in from left (0), right (1), bottom (2), or top (3). */
 function getCardVariants(index: number) {
   const dir = index % 4;
   const offset = 56;
@@ -49,6 +51,7 @@ function getCardVariants(index: number) {
   return { hidden: { opacity: 0, y: -offset }, show: { opacity: 1, y: 0 } };
 }
 
+/* Stagger: children animate in sequence (0.1s apart) for a cascading reveal. */
 const container = {
   hidden: { opacity: 0 },
   show: {
@@ -58,8 +61,8 @@ const container = {
 };
 
 /**
- * Educational section for beginners: React and TypeScript concepts used in this app.
- * Scroll-triggered entrances: header from top/left/bottom, cards from left/right/up/down.
+ * "Learn the basics" section (id="learn"): icon + title + intro + grid of concept cards.
+ * Uses whileInView so content animates when user scrolls here; cards use getCardVariants for direction.
  */
 export function EducationalSection() {
   return (

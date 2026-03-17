@@ -3,7 +3,8 @@
 import { RippleButton } from './RippleButton';
 
 /**
- * Reusable primary CTA button (ripple + branded styles). Use for main actions.
+ * Primary call-to-action button: wraps RippleButton with label, optional icon, and disabled state.
+ * When disabled, func is not called and styles switch to muted (opacity, cursor-not-allowed).
  */
 interface ButtonProps {
   text: string;

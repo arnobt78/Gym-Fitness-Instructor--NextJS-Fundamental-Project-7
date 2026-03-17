@@ -1,3 +1,8 @@
+/**
+ * Static workout data: TEMPOS (tempo strings), SCHEMES (goal → rep ranges, ratio, rest),
+ * WORKOUTS (workout type → muscle groups or split days), EXERCISES (exercise key → type, meta, muscles, description, variants).
+ * Consumed by src/lib/workout.ts for generateWorkout(). No API calls; all in-memory.
+ */
 import type { SchemesMap, WorkoutsMap, ExercisesMap } from '@/types';
 
 export const TEMPOS: readonly string[] = ['3 0 2', '2 2 2', '4 1 1', '5 3 1', '1 0 1', '3 2 1', '2 1 1'];

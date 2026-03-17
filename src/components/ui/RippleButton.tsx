@@ -16,6 +16,10 @@ interface RippleButtonProps {
   disabled?: boolean;
 }
 
+/**
+ * Button with ripple-on-click effect: on click, a circle expands from the click position (CSS animate-ripple).
+ * Ripples are stored in state and removed after 600ms; disabled clicks do not trigger ripple or onClick.
+ */
 export function RippleButton({
   children,
   className = '',
@@ -27,6 +31,7 @@ export function RippleButton({
   const [ripples, setRipples] = useState<Array<{ x: number; y: number; id: number }>>([]);
   const idRef = useRef(0);
 
+  /* Compute click position relative to button, add ripple, remove after animation, then call onClick. */
   const handleClick = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
       const button = buttonRef.current;

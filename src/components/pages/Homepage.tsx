@@ -9,8 +9,9 @@ import { Workout } from '@/components/Workout';
 import { Footer } from '@/components/Footer';
 
 /**
- * Client root: holds workout state via context and renders Nav, Hero, Learn, Generator, Workout, Footer.
- * All CSR (state, events) lives here and in child components.
+ * Client-side root for the home page. WorkoutProvider wraps the tree so Nav, Generator, and Workout
+ * can read/update workout state via useWorkout(). Section order: Nav (sticky) → Hero → Learn →
+ * Generator (form) → Workout (results) → Footer.
  */
 export function Homepage() {
   return (

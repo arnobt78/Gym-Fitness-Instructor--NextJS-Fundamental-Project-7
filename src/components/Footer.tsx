@@ -2,6 +2,9 @@
 
 import { Heart } from "lucide-react";
 
+/**
+ * Site footer: copyright and year. suppressHydrationWarning avoids mismatch from new Date().getFullYear() between server and client.
+ */
 export function Footer() {
   return (
     <footer className="w-full border-t border-slate-700/50 bg-slate-950/80 py-6 mt-auto">

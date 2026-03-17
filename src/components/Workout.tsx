@@ -8,13 +8,14 @@ import { ExerciseCard } from "@/components/ExerciseCard";
 import { RippleButton } from "@/components/ui/RippleButton";
 
 /**
- * Workout section: only rendered when workout is non-null. Lists generated exercises.
- * Copy to clipboard and Reset workout actions.
+ * Workout section (id="workout"): only mounts when context has a non-empty workout.
+ * Renders SectionWrapper + action buttons (Copy, New workout) + list of ExerciseCards.
  */
 export function Workout() {
   const { workout, resetWorkout } = useWorkout();
   const [copied, setCopied] = useState(false);
 
+  /* Build plain-text summary and write to clipboard; show "Copied!" for 2s. */
   const copyWorkout = useCallback(() => {
     if (!workout || workout.length === 0) return;
     const text = workout
@@ -29,6 +30,7 @@ export function Workout() {
     });
   }, [workout]);
 
+  /* No workout yet: section is not in DOM (so Nav "Workout" link can stay disabled). */
   if (!workout || workout.length === 0) return null;
 
   return (

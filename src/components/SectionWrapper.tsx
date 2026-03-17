@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
 
 /**
- * Section layout: optional icon, header line + title (middle word highlighted) + children.
+ * Reusable section shell: section id for anchor links, optional icon, header text, three-part title
+ * (middle part in blue), and children. Uses Framer whileInView for fade-in when section scrolls into view.
  */
 interface SectionWrapperProps {
   id: string;

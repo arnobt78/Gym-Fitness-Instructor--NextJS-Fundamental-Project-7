@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import type { GoalType, WorkoutTypeKey } from "@/types";
 
+/* Framer Motion config: each block (01, 02, 03) animates in from bottom when it enters viewport. */
 const scrollReveal = {
   initial: { opacity: 0, y: 48 },
   whileInView: { opacity: 1, y: 0 },
@@ -24,6 +25,7 @@ const scrollReveal = {
   transition: { type: "tween" as const, ease: [0.25, 0.46, 0.45, 0.94], duration: 0.55 },
 };
 
+/* Reusable header for each step: number + icon + title + description. */
 interface SectionHeaderProps {
   index: string;
   title: string;
@@ -54,7 +56,8 @@ function SectionHeader({
 }
 
 /**
- * Workout generator: workout type, muscle groups, goal. Uses WorkoutContext.
+ * Generator section (id="generate"): three steps—workout type, muscle groups, goal—plus Formulate button.
+ * Reads/writes poison, muscles, goal via useWorkout(); updateWorkout() runs lib/workout and sets workout in context.
  */
 export function Generator() {
   const {
@@ -72,6 +75,7 @@ export function Generator() {
     setShowModal((prev) => !prev);
   }
 
+  /* Toggle muscle in list; for non-individual splits only one muscle (day) is allowed; individual allows 1–2. */
   function updateMuscles(muscleGroup: string) {
     if (muscles.includes(muscleGroup)) {
       setMuscles(muscles.filter((val) => val !== muscleGroup));
@@ -89,6 +93,7 @@ export function Generator() {
 
   const workoutKeys = Object.keys(WORKOUTS) as WorkoutTypeKey[];
   const schemeKeys = Object.keys(SCHEMES) as GoalType[];
+  /* For individual: list of muscle names; for splits: keys of the chosen split (e.g. push, pull, legs). */
   const muscleOptions =
     poison === "individual"
       ? (WORKOUTS.individual as readonly string[])
@@ -220,6 +225,7 @@ export function Generator() {
         ))}
       </div>
       </motion.div>
+      {/* Formulate disabled until all three steps are set; when disabled, hover shows tooltip. Scroll runs after 2 rAFs so #workout section exists in DOM. */}
       {(() => {
         const canFormulate = poison && muscles.length >= 1 && goal;
         const tooltipText = !poison
@@ -234,9 +240,15 @@ export function Generator() {
             func={() => {
               if (!canFormulate) return;
               updateWorkout();
-              document
-                .getElementById("workout")
-                ?.scrollIntoView({ behavior: "smooth" });
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  const el = document.getElementById("workout");
+                  if (el) {
+                    el.scrollIntoView({ behavior: "smooth" });
+                    window.history.replaceState(null, "", "#workout");
+                  }
+                });
+              });
             }}
             text="Formulate & Get Sweaty"
             icon={<FlaskConical className="h-5 w-5" aria-hidden />}

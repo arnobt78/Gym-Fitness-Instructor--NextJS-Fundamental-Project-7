@@ -1,7 +1,7 @@
 /**
- * Workout generation logic: flattens exercise variants and builds a random workout
- * from selected muscles and goal. All logic is pure (no TDZ): flattened exercises
- * are computed inside generateWorkout.
+ * Workout generation: pure functions only (no React). exercisesFlattener expands EXERCISES
+ * variants into separate entries; generateWorkout filters by muscles/goal, builds set list from
+ * scheme ratio, picks random compound/accessory exercises per set, assigns reps/rest/tempo.
  */
 
 import { EXERCISES, SCHEMES, TEMPOS, WORKOUTS } from '@/data/swoldier';
@@ -77,6 +77,7 @@ export function generateWorkout(args: GenerateWorkoutInput): GeneratedExercise[]
   const scheme: GoalType = goal;
   const ratio = SCHEMES[scheme].ratio;
 
+  /* Build list of sets: each has setType (compound/accessory) and muscleGroup from ratio. */
   type SetSpec = { setType: 'compound' | 'accessory'; muscleGroup: string };
   const setTypes = ratio.flatMap((curr, index) =>
     Array.from({ length: Number(curr) }, () =>
@@ -89,6 +90,7 @@ export function generateWorkout(args: GenerateWorkoutInput): GeneratedExercise[]
       arrOfMuscles[index % arrOfMuscles.length] ?? arrOfMuscles[0] ?? '',
   }));
 
+  /* Split flattened exercises into compound vs accessory, keeping only those that target selected muscles. */
   type ExByType = Record<string, ExerciseBase>;
   const { compound: compoundExercises, accessory: accessoryExercises } = exerKeys.reduce<{
     compound: ExByType;
@@ -115,6 +117,7 @@ export function generateWorkout(args: GenerateWorkoutInput): GeneratedExercise[]
 
   const genWOD: GeneratedExercise[] = [];
 
+  /* For each set: pick a random exercise of the right type and muscle, assign reps/rest/tempo from scheme, track used. */
   for (const { setType, muscleGroup } of sets) {
     const data = setType === 'compound' ? compoundExercises : accessoryExercises;
     const filteredObj: ExByType = {};

@@ -4,6 +4,7 @@ import React, { createContext, useCallback, useContext, useState } from 'react';
 import { generateWorkout } from '../lib/workout';
 import type { GeneratedExercise, GoalType, WorkoutTypeKey } from '@/types';
 
+/* State shape: workout = generated list or null; poison = workout type; muscles = selected; goal = scheme. */
 interface WorkoutState {
   workout: GeneratedExercise[] | null;
   poison: WorkoutTypeKey;
@@ -29,21 +30,24 @@ const initialState: WorkoutState = {
   goal: 'strength_power',
 };
 
+/**
+ * Provides workout state to the tree. Generator and Nav/Workout consume it via useWorkout().
+ * updateWorkout calls generateWorkout from lib/workout and sets result; resetWorkout clears everything.
+ */
 export function WorkoutProvider({ children }: { children: React.ReactNode }) {
   const [workout, setWorkout] = useState<GeneratedExercise[] | null>(initialState.workout);
   const [poison, setPoison] = useState<WorkoutTypeKey>(initialState.poison);
   const [muscles, setMuscles] = useState<string[]>(initialState.muscles);
   const [goal, setGoal] = useState<GoalType>(initialState.goal);
 
+  /* Build workout from current poison/muscles/goal; no-op if muscles empty. Scroll to #workout is handled in Generator. */
   const updateWorkout = useCallback(() => {
     if (muscles.length < 1) return;
     const newWorkout = generateWorkout({ poison, muscles, goal });
     setWorkout(newWorkout);
-    if (typeof window !== 'undefined') {
-      window.location.href = '#workout';
-    }
   }, [poison, muscles, goal]);
 
+  /* Clear generated workout and reset form to initial values. */
   const resetWorkout = useCallback(() => {
     setWorkout(null);
     setMuscles([]);
@@ -67,6 +71,7 @@ export function WorkoutProvider({ children }: { children: React.ReactNode }) {
   return <WorkoutContext.Provider value={value}>{children}</WorkoutContext.Provider>;
 }
 
+/** Hook to read/update workout state. Throws if used outside WorkoutProvider. */
 export function useWorkout(): WorkoutContextValue {
   const ctx = useContext(WorkoutContext);
   if (!ctx) throw new Error('useWorkout must be used within WorkoutProvider');
