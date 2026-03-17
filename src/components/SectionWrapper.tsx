@@ -33,7 +33,7 @@ export function SectionWrapper({ children, header, title, id, icon: Icon }: Sect
           {title[0]} <span className="uppercase text-blue-400">{title[1]}</span> {title[2]}
         </h2>
       </div>
-      <div className="max-w-[800px] w-full flex flex-col mx-auto gap-10 p-4">{children}</div>
+      <div className="w-full max-w-9xl mx-auto flex flex-col gap-10 p-4">{children}</div>
     </motion.section>
   );
 }
